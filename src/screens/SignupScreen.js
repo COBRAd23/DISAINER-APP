@@ -23,6 +23,7 @@ const SignupScreen = ({ navigation }) => {
 
   const [request, , promptAsync] = Google.useAuthRequest({
     expoClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
+    androidClientId: '622102470878-l9i730s0tnbj7bi7m4tqjdkcbv25saki.apps.googleusercontent.com',
     webClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
     scopes: ['openid', 'profile', 'email'],
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
