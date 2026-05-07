@@ -2,7 +2,7 @@
 
 > **"Diseñar es decidir. Lo demás sobra."**
 
-Aplicación móvil de alta gama desarrollada para la marca personal **Disainer**. Una solución integral para la gestión de proyectos de diseño, branding y desarrollo web, enfocada en clientes exclusivos de **Zárate** y el mercado global.
+Aplicación móvil de alta gama desarrollada para la marca personal **Disainer**. Una solución integral para la gestión de proyectos de diseño, branding y desarrollo web.
 
 ## 🚀 Características Principales
 
