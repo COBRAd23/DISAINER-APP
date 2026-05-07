@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, Platform, StatusBar } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
-import { Mail, Lock, ChevronLeft } from 'lucide-react-native';
-import { auth, rtdb } from '../config/firebase';
-import { signInWithEmailAndPassword, signInWithCredential, GoogleAuthProvider } from 'firebase/auth';
-import { ref, set } from 'firebase/database';
 import * as AuthSession from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import { GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, set } from 'firebase/database';
+import { ChevronLeft, Lock, Mail } from 'lucide-react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { auth, rtdb } from '../config/firebase';
+import { COLORS, SPACING, TYPOGRAPHY } from '../constants/theme';
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -18,36 +18,39 @@ const LoginScreen = ({ navigation }) => {
     WebBrowser.maybeCompleteAuthSession();
   }, []);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
+  const [request, , promptAsync] = Google.useAuthRequest({
     expoClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
     webClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
-    scopes: ['profile', 'email'],
+    scopes: ['openid', 'profile', 'email'],
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
   });
 
-  useEffect(() => {
-    if (response?.type === 'success' && response.authentication?.idToken) {
-      handleGoogleSignIn(response.authentication.idToken, response.authentication.accessToken);
-    }
-  }, [response]);
-
-  const handleGoogleSignIn = async (idToken, accessToken) => {
+  const handleGoogleLogin = async () => {
+    setLoading(true);
     try {
-      const credential = GoogleAuthProvider.credential(idToken);
-      const userCredential = await signInWithCredential(auth, credential);
-      const user = userCredential.user;
+      const result = await promptAsync({ useProxy: true, extraParams: { prompt: 'select_account' } });
 
-      const googleProfile = {
-        uid: user.uid,
-        name: user.displayName || 'Usuario',
-        email: user.email,
-        photo: user.photoURL,
-        provider: 'google',
-        createdAt: new Date().toISOString(),
-      };
+      if (result.type === 'success' && result.authentication?.idToken) {
+        const credential = GoogleAuthProvider.credential(result.authentication.idToken);
+        const userCredential = await signInWithCredential(auth, credential);
+        const user = userCredential.user;
 
-      await set(ref(rtdb, `users/${user.uid}`), googleProfile);
-      Alert.alert('Éxito', `¡Bienvenido ${googleProfile.name}!`);
+        const googleProfile = {
+          uid: user.uid,
+          name: user.displayName || 'Usuario',
+          email: user.email,
+          photo: user.photoURL,
+          provider: 'google',
+          createdAt: new Date().toISOString(),
+        };
+
+        await set(ref(rtdb, `users/${user.uid}`), googleProfile);
+        Alert.alert('Éxito', `¡Bienvenido ${googleProfile.name}!`);
+      } else if (result.type === 'cancel' || result.type === 'dismiss') {
+        Alert.alert('Cancelado', 'El inicio de sesión fue cancelado');
+      } else {
+        Alert.alert('Error', 'No se pudo completar el inicio de sesión con Google');
+      }
     } catch (error) {
       Alert.alert('Error de Google Login', error.message || 'Ocurrió un error con Google Sign-In');
     } finally {
@@ -146,14 +149,8 @@ const LoginScreen = ({ navigation }) => {
             </View>
 
             <TouchableOpacity 
-              style={[styles.googleButton, !request && { opacity: 0.6 }]} 
-              onPress={() => {
-                setLoading(true);
-                promptAsync({ useProxy: true }).catch(error => {
-                  setLoading(false);
-                  Alert.alert('Error', error.message || 'No se pudo iniciar Google Sign-In');
-                });
-              }}
+              style={[styles.googleButton, (!request || loading) && { opacity: 0.6 }]} 
+              onPress={handleGoogleLogin}
               disabled={loading || !request}
             >
               <Image 

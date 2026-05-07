@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, SafeAreaView, Image, ActivityIndicator, Alert, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
-import { Camera, User, Mail, Lock, Phone, MapPin, ChevronLeft } from 'lucide-react-native';
+import * as AuthSession from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
 import * as ImagePicker from 'expo-image-picker';
-import { auth, rtdb } from '../config/firebase';
-import { createUserWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
+import { Camera, ChevronLeft, Lock, Mail, MapPin, Phone, User } from 'lucide-react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { auth, rtdb } from '../config/firebase';
+import { COLORS, SPACING, TYPOGRAPHY } from '../constants/theme';
 
 const SignupScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,13 @@ const SignupScreen = ({ navigation }) => {
     phone: '',
     address: '',
     photo: null,
+  });
+
+  const [request, , promptAsync] = Google.useAuthRequest({
+    expoClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
+    webClientId: '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com',
+    scopes: ['openid', 'profile', 'email'],
+    redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
   });
 
   const pickImage = async () => {
@@ -69,22 +78,33 @@ const SignupScreen = ({ navigation }) => {
   const handleGoogleSignup = async () => {
     setLoading(true);
     try {
-      const userCredential = await signInAnonymously(auth);
-      const user = userCredential.user;
-      
-      const googleProfile = {
-        firstName: 'Agustín',
-        lastName: '(Google)',
-        name: 'Agustín (Google)',
-        email: 'agustin@gmail.com',
-        photo: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
-        provider: 'google',
-        createdAt: new Date().toISOString()
-      };
-      
-      await set(ref(rtdb, `users/${user.uid}`), googleProfile);
+      const result = await promptAsync({ useProxy: true, extraParams: { prompt: 'select_account' } });
+      if (result.type === 'success' && result.authentication?.idToken) {
+        const credential = GoogleAuthProvider.credential(result.authentication.idToken);
+        const userCredential = await signInWithCredential(auth, credential);
+        const user = userCredential.user;
+
+        const [firstName, ...rest] = (user.displayName || 'Usuario').split(' ');
+        const lastName = rest.join(' ');
+
+        const googleProfile = {
+          firstName,
+          lastName,
+          name: user.displayName || 'Usuario (Google)',
+          email: user.email,
+          photo: user.photoURL,
+          provider: 'google',
+          createdAt: new Date().toISOString(),
+        };
+
+        await set(ref(rtdb, `users/${user.uid}`), googleProfile);
+      } else if (result.type === 'cancel' || result.type === 'dismiss') {
+        Alert.alert('Cancelado', 'El registro con Google fue cancelado');
+      } else {
+        Alert.alert('Error', 'No se pudo completar el registro con Google');
+      }
     } catch (error) {
-      Alert.alert('Error', 'No se pudo registrar con Google');
+      Alert.alert('Error', error.message || 'No se pudo registrar con Google');
     } finally {
       setLoading(false);
     }

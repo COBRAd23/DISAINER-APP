@@ -1,9 +1,9 @@
-import { initializeApp, getApps } from 'firebase/app';
+import { getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB0crqxUUMvjmHxSWMEr9CiHI2Fx1lFh7s",
+  apiKey: "AIzaSyA6oy293fvrbrypHl8P698KzCPqfGaWbx8",
   authDomain: "disainer-app.firebaseapp.com",
   databaseURL: "https://disainer-app-default-rtdb.firebaseio.com",
   projectId: "disainer-app",

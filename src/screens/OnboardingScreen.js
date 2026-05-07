@@ -1,13 +1,7 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ImageBackground, FlatList, Dimensions, Image, ActivityIndicator } from 'react-native';
-import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
 import { Mail } from 'lucide-react-native';
-import { auth, rtdb } from '../config/firebase';
-import { signInAnonymously } from 'firebase/auth';
-import { ref, set } from 'firebase/database';
-
-const WEB_CLIENT_ID = '622102470878-2hlejbsjp9mc4kp9cqjelfqdghccr13c.apps.googleusercontent.com';
-
+import { useRef, useState } from 'react';
+import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { COLORS, TYPOGRAPHY } from '../constants/theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,7 +30,6 @@ const SLIDES = [
 
 const OnboardingScreen = ({ navigation }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [loadingGoogle, setLoadingGoogle] = useState(false);
   const flatListRef = useRef();
 
   const updateCurrentSlideIndex = e => {
@@ -124,31 +117,10 @@ const OnboardingScreen = ({ navigation }) => {
               <Text style={styles.cardTitle}>Bienvenido de Nuevo</Text>
               
               <TouchableOpacity 
-                style={[styles.socialButton, loadingGoogle && { opacity: 0.6 }]} 
-                disabled={loadingGoogle}
-                onPress={async () => {
-                  try {
-                    setLoadingGoogle(true);
-                    const userCredential = await signInAnonymously(auth);
-                    const user = userCredential.user;
-                    await set(ref(rtdb, `users/${user.uid}`), {
-                      name: 'Agustín Disainer',
-                      email: 'agustin.disainer@gmail.com',
-                      photo: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
-                      provider: 'google',
-                      createdAt: new Date().toISOString()
-                    });
-                  } catch (error) {
-                    console.error('Error:', error);
-                  } finally {
-                    setLoadingGoogle(false);
-                  }
-                }}
+                style={styles.socialButton} 
+                onPress={() => navigation.navigate('Login')}
               >
-                {loadingGoogle
-                  ? <ActivityIndicator color="#000" size="small" />
-                  : <Text style={styles.socialButtonText}>Continuar con Google</Text>
-                }
+                <Text style={styles.socialButtonText}>Iniciar sesión</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.emailButton} onPress={() => navigation.navigate('Login')}>
