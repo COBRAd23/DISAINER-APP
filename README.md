@@ -26,32 +26,24 @@ Aplicación móvil de alta gama desarrollada para la marca personal **Disainer**
 ## 📂 Estructura del Proyecto (Arquitectura MVVM)
 
 APP DISAINER
-├── 📁 bento_service_catalog_1
-├── 📁 bento_service_catalog_2
-├── 📁 client_dashboard
-├── 📁 disainer_premium_mobile
-├── 📁 disainer-mobile (Raíz del Proyecto Expo)
-│   ├── 📁 .expo
-│   ├── 📁 .idea
-│   ├── 📁 .vscode
-│   ├── 📁 app
-│   ├── 📁 assets            # Imágenes, iconos y fuentes (Futura)
-│   ├── 📁 components        # Botones, Cards, GlassView, Bento items
-│   ├── 📁 constants         # theme.js, colors.js
-│   ├── 📁 hooks             # Lógica de estado y persistencia
-│   ├── 📁 node_modules
-│   ├── 📁 scripts
-│   ├── 📁 src               # Código fuente principal
-│   ├── 📄 .gitignore
-│   ├── 📄 App.js            # Punto de entrada y Navegación
-│   ├── 📄 app.json          # Configuración de Expo y Firebase
-│   ├── 📄 eslint.config.js
-│   ├── 📄 expo-env.d.ts
-│   ├── 📄 package-lock.json
-│   ├── 📄 package.json      # Dependencias (SQLite, Firebase, Camera)
-│   ├── 📄 README.md         # Documentación del proyecto
-│   └── 📄 tsconfig.json
-├── 📁 onboarding_sign_in
-├── 📁 project_brief_contact_form
-├── 📁 service_details_tiers
-└── 📁 shopping_cart         # Lógica del Carrito y SQLite
+
+├── 📁 .expo
+├── 📁 .idea
+├── 📁 .vscode
+├── 📁 app
+├── 📁 assets            # Imágenes, iconos y fuentes (Futura)
+├── 📁 components        # Botones, Cards, GlassView, Bento items
+├── 📁 constants         # theme.js, colors.js
+├── 📁 hooks             # Lógica de estado y persistencia
+├── 📁 node_modules
+├── 📁 scripts
+├── 📁 src               # Código fuente principal
+├── 📄 .gitignore
+├── 📄 App.js            # Punto de entrada y Navegación
+├── 📄 app.json          # Configuración de Expo y Firebase
+├── 📄 eslint.config.js
+├── 📄 expo-env.d.ts
+├── 📄 package-lock.json
+├── 📄 package.json      # Dependencias (SQLite, Firebase, Camera)
+├── 📄 README.md         # Documentación del proyecto
+└── 📄 tsconfig.json
