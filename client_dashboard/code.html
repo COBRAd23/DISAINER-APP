@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e5e2e1",
+                    "primary-fixed-dim": "#f1c100",
+                    "tertiary-fixed-dim": "#adc6ff",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#002e69",
+                    "on-secondary": "#2f3131",
+                    "secondary": "#c6c6c7",
+                    "surface-tint": "#f1c100",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary": "#3d2f00",
+                    "primary": "#ffedc3",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed": "#d8e2ff",
+                    "on-error": "#690005",
+                    "primary-container": "#ffcc00",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-surface-variant": "#d2c5ab",
+                    "surface-container-highest": "#353534",
+                    "on-tertiary-container": "#0056b8",
+                    "secondary-container": "#454747",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "surface": "#131313",
+                    "surface-container-low": "#1c1b1b",
+                    "tertiary-container": "#bfd2ff",
+                    "on-background": "#e5e2e1",
+                    "on-primary-container": "#6f5700",
+                    "outline-variant": "#4e4632",
+                    "outline": "#9a9078",
+                    "on-primary-fixed": "#241a00",
+                    "background": "#131313",
+                    "surface-dim": "#131313",
+                    "inverse-primary": "#745b00",
+                    "secondary-fixed": "#e2e2e2",
+                    "inverse-surface": "#e5e2e1",
+                    "error-container": "#93000a",
+                    "surface-bright": "#3a3939",
+                    "tertiary": "#e9eeff",
+                    "on-primary-fixed-variant": "#584400",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-tertiary-fixed": "#001a41",
+                    "primary-fixed": "#ffe08b",
+                    "surface-container": "#201f1f",
+                    "on-tertiary-fixed-variant": "#004493",
+                    "surface-variant": "#353534",
+                    "inverse-on-surface": "#313030",
+                    "on-secondary-container": "#b4b5b5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "20px",
+                    "gutter": "12px",
+                    "bento-gap": "12px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(25, 25, 25, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container pb-24">
+<!-- TopAppBar -->
+<header class="bg-zinc-950/80 backdrop-blur-2xl border-b border-white/10 fixed top-0 w-full z-50">
+<div class="flex items-center justify-between px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="text-yellow-400 active:opacity-80 active:scale-95 transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-space-grotesk tracking-tight text-lg font-bold tracking-[0.2em] text-yellow-400 uppercase">DISAINER</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A professional high-contrast portrait of a creative designer with sharp lighting. The background is a minimalist dark studio setting with subtle yellow ambient light leaks. The style is editorial and sophisticated, mirroring a premium technological brand identity with deep shadows and clean lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2-BEFlKWSYfbjWvGVtmh5ktMf5uR5QEzlQCryy3muu8wjhR3NAbXsdRHL6MVKzCPSsCdUDlQVlJolJF825g19K3nO3U1aFMdsV6DE3nxxNfiqGsV5NeiT7NNR0tAxXW_sjz6cTPX7F_RzfUQ03Ssvqwf4q19kBn6b8vuJJjRZmM0aadYZn97kzXrda0tRzFnrfIOGSjIMst1ADhcP8k9I9HfkscNDqr2MnOkz1IbExZtR3QU01u8Zf8A_WmsMG_OJsoZQEMrrcYz3"/>
+</div>
+</div>
+</header>
+<main class="mt-20 px-4 max-w-7xl mx-auto space-y-8">
+<!-- Hero Section -->
+<section class="space-y-2">
+<p class="font-label-md text-primary-container uppercase">Portal del Cliente</p>
+<h1 class="font-headline-xl text-on-surface">Hola, Julián</h1>
+</section>
+<!-- Stats Bento Grid -->
+<section class="bento-grid">
+<div class="col-span-2 glass-card rounded-xl p-5 flex flex-col justify-between">
+<span class="font-label-sm text-zinc-500 uppercase tracking-widest">Pedidos Activos</span>
+<div class="flex items-end justify-between mt-4">
+<span class="text-5xl font-headline-lg text-primary-container">02</span>
+<span class="material-symbols-outlined text-primary-container text-3xl">token</span>
+</div>
+</div>
+<div class="col-span-2 glass-card rounded-xl p-5 flex flex-col justify-between">
+<span class="font-label-sm text-zinc-500 uppercase tracking-widest">Tickets de Soporte</span>
+<div class="flex items-end justify-between mt-4">
+<span class="text-5xl font-headline-lg text-on-surface">00</span>
+<span class="material-symbols-outlined text-zinc-500 text-3xl">confirmation_number</span>
+</div>
+</div>
+<div class="col-span-4 glass-card rounded-xl p-5 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">notifications</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Próximo Hito</p>
+<p class="text-sm text-zinc-400">Revisión de Diseño en 2 días</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary-container">chevron_right</span>
+</div>
+</section>
+<!-- Active Projects -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-on-surface">Mis Proyectos</h2>
+<button class="font-label-sm text-primary-container flex items-center gap-1 uppercase">Ver Archivo <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+</div>
+<div class="space-y-4">
+<!-- Project Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover opacity-50" data-alt="A sophisticated 3D abstract render featuring fluid, metallic black shapes and glowing yellow neon lines. The environment is dark and atmospheric, with sharp light reflections on glossy surfaces. The aesthetic is high-tech and minimalist, perfectly aligned with a premium corporate branding project visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG_r60mkGYtojLmupJlBNer3K1yTyEDEVujwUhlQyxptvW4ndSwh5liTXYqTOMx7ikU0Kid-Wm6NFnwPvZRE48p4zTBfr-sHQ10pU5UsUyKL1YHdEf2vx-RqDxtANt5AUGSRBRfSnxdlUX49UzacE2wBKcGyGOs6Koh5U22Y_Z7enOKuGC6o5Hkmr88jq2mYTMeQtIZ48zzA5NC7Ky_qjcHSpZ7g9CO45nPxXWZSomgjYxlEprtZwS84DTjxqT2HX0qZ5DwyxxpzuX"/>
+<div class="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+<div class="absolute bottom-4 left-5">
+<span class="bg-primary-container/20 border border-primary-container/30 text-primary-container px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest">En Progreso</span>
+</div>
+</div>
+<div class="p-5 space-y-6">
+<div>
+<h3 class="font-headline-md text-on-surface">Branding Corporativo</h3>
+<p class="text-zinc-500 text-sm font-body-md">Sistema de identidad para Nexus Tech Solutions</p>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm uppercase text-[10px] tracking-widest">
+<span class="text-primary-container">Diseño</span>
+<span class="text-zinc-400">75%</span>
+</div>
+<div class="h-0.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-zinc-500 uppercase">Descubrimiento</span>
+<div class="h-0.5 bg-primary-container w-full"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-primary-container uppercase">Diseño</span>
+<div class="h-0.5 bg-primary-container/40 w-full relative">
+<div class="absolute top-0 left-0 h-full bg-primary-container w-3/4"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-zinc-500 uppercase">Desarrollo</span>
+<div class="h-0.5 bg-white/10 w-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="h-32 w-full relative">
+<img class="w-full h-full object-cover opacity-50" data-alt="A clean, minimalist workspace layout featuring a high-end monitor displaying complex UI wireframes. The lighting is low-key and dramatic, highlighting the sleek edges of hardware against a dark background. The color palette is dominated by neutral greys and blacks with sharp yellow interface accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLEcKF0hxz40jm9nNMfsDdk1XepUdxnVNv1yaE5qmIEqe4yNr1-bP3vYSyVJWrTx98vVihXWpBv_x1iYyT7-a8otEHOYvL8xXK9p8_CBt1xn6KE1BxCj9L2xbo9bLeeSdqlC0-r0PspTWkr5JxAisyLIOkM9OBRLaXyvVPHaIugpKO7h4KCkKywYjitVb6sdCxUU9imCNx5iHgjMASU0g6W91TjsUklqy5Dh5QB_JjvxIGtjskps1KA_1hTusPZ2cWmoaf_mdNGNCd"/>
+<div class="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+<div class="absolute bottom-4 left-5">
+<span class="bg-zinc-500/20 border border-white/20 text-white px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest">Descubrimiento</span>
+</div>
+</div>
+<div class="p-5 space-y-6">
+<div>
+<h3 class="font-headline-md text-on-surface">UX para Ecommerce</h3>
+<p class="text-zinc-500 text-sm font-body-md">Tienda de Ropa de Lujo</p>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm uppercase text-[10px] tracking-widest">
+<span class="text-primary-container">Estrategia</span>
+<span class="text-zinc-400">20%</span>
+</div>
+<div class="h-0.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-1/5"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-primary-container uppercase">Descubrimiento</span>
+<div class="h-0.5 bg-primary-container/40 w-full relative">
+<div class="absolute top-0 left-0 h-full bg-primary-container w-1/5"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-zinc-500 uppercase">Diseño</span>
+<div class="h-0.5 bg-white/10 w-full"></div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-[9px] text-zinc-500 uppercase">Desarrollo</span>
+<div class="h-0.5 bg-white/10 w-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary CTA -->
+<section class="pb-8">
+<button class="w-full h-14 bg-primary-container text-on-primary-fixed-variant font-label-md uppercase tracking-widest rounded-lg flex items-center justify-center gap-2"><span class="material-symbols-outlined">add</span> Iniciar Nuevo Proyecto</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe bg-zinc-950/60 backdrop-blur-2xl border-t border-white/15 rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-yellow-400 border-t-2 border-yellow-400 pt-2 pb-3 px-4 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Inicio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-2 pb-3 px-4 hover:text-zinc-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Catálogo</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-2 pb-3 px-4 hover:text-zinc-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Carrito</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-2 pb-3 px-4 hover:text-zinc-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Perfil</span>
+</a>
+</nav>
+</body></html>
