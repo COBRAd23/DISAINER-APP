@@ -23,27 +23,27 @@ Aplicación móvil de alta gama desarrollada para la marca personal **Disainer**
 - **Backend & Auth:** Firebase (Authentication & Realtime Database).
 - **Iconografía:** Lucide React Native.
 
-## 📂 Estructura del Proyecto (Arquitectura MVVM)
+## 📂 Estructura del Proyecto
 
 APP DISAINER
 
-├── 📁 .expo
-├── 📁 .idea
-├── 📁 .vscode
-├── 📁 app
-├── 📁 assets            # Imágenes, iconos y fuentes (Futura)
-├── 📁 components        # Botones, Cards, GlassView, Bento items
-├── 📁 constants         # theme.js, colors.js
-├── 📁 hooks             # Lógica de estado y persistencia
-├── 📁 node_modules
-├── 📁 scripts
-├── 📁 src               # Código fuente principal
-├── 📄 .gitignore
-├── 📄 App.js            # Punto de entrada y Navegación
-├── 📄 app.json          # Configuración de Expo y Firebase
-├── 📄 eslint.config.js
-├── 📄 expo-env.d.ts
-├── 📄 package-lock.json
-├── 📄 package.json      # Dependencias (SQLite, Firebase, Camera)
-├── 📄 README.md         # Documentación del proyecto
-└── 📄 tsconfig.json
+📁 .expo
+📁 .idea
+📁 .vscode
+📁 app
+📁 assets            # Imágenes, iconos y fuentes (Futura)
+📁 components        # Botones, Cards, GlassView, Bento items
+📁 constants         # theme.js, colors.js
+📁 hooks             # Lógica de estado y persistencia
+📁 node_modules
+📁 scripts
+📁 src               # Código fuente principal
+📄 .gitignore
+📄 App.js            # Punto de entrada y Navegación
+📄 app.json          # Configuración de Expo y Firebase
+📄 eslint.config.js
+📄 expo-env.d.ts
+📄 package-lock.json
+📄 package.json      # Dependencias (SQLite, Firebase, Camera)
+📄 README.md         # Documentación del proyecto
+📄 tsconfig.json
