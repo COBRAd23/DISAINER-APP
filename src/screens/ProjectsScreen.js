@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, ActivityIndicator, StatusBar, Platform } from 'react-native';
 import { ChevronLeft, ExternalLink, Package } from 'lucide-react-native';
-import { auth, rtdb } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { ref, onValue } from 'firebase/database';
 import { useTheme } from '../context/ThemeContext';
 
@@ -15,7 +15,7 @@ const ProjectsScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (!auth.currentUser) { setLoading(false); return; }
-    const ordersRef = ref(rtdb, `orders/${auth.currentUser.uid}`);
+    const ordersRef = ref(db, `orders/${auth.currentUser.uid}`);
     const unsub = onValue(ordersRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {

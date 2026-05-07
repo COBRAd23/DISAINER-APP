@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, rtdb } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { ref, onValue, push, set } from 'firebase/database';
 
 const NotificationContext = createContext();
@@ -11,7 +11,7 @@ export const NotificationProvider = ({ children }) => {
   useEffect(() => {
     if (!auth.currentUser) return;
 
-    const notifRef = ref(rtdb, `notifications/${auth.currentUser.uid}`);
+    const notifRef = ref(db, `notifications/${auth.currentUser.uid}`);
     const unsubscribe = onValue(notifRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -33,7 +33,7 @@ export const NotificationProvider = ({ children }) => {
 
   const addNotification = async (title, body, type = 'info') => {
     if (!auth.currentUser) return;
-    const notifRef = ref(rtdb, `notifications/${auth.currentUser.uid}`);
+    const notifRef = ref(db, `notifications/${auth.currentUser.uid}`);
     await push(notifRef, {
       title,
       body,
@@ -55,11 +55,11 @@ export const NotificationProvider = ({ children }) => {
     });
     
     if (Object.keys(updates).length > 0) {
-      const notifRef = ref(rtdb, `notifications/${auth.currentUser.uid}`);
+      const notifRef = ref(db, `notifications/${auth.currentUser.uid}`);
       // Wait, Firebase doesn't have an easy multi-update like this if we use set on children, 
       // let's do it safely:
       for (const id of Object.keys(updates)) {
-        await set(ref(rtdb, `notifications/${auth.currentUser.uid}/${id.split('/')[0]}/unread`), false);
+        await set(ref(db, `notifications/${auth.currentUser.uid}/${id.split('/')[0]}/unread`), false);
       }
     }
   };

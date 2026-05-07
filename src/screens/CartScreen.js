@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
 import { ChevronLeft, Trash2, ShoppingBag, CreditCard, CheckCircle2, ReceiptText, Download } from 'lucide-react-native';
 import { useCart } from '../hooks/useCart';
-import { auth, rtdb } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { ref, push, set } from 'firebase/database';
 import { useNotifications } from '../context/NotificationContext';
 
@@ -41,7 +41,7 @@ const CartScreen = ({ navigation }) => {
         let generatedId = 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
 
         if (auth.currentUser) {
-          const ordersRef = ref(rtdb, `orders/${auth.currentUser.uid}`);
+          const ordersRef = ref(db, `orders/${auth.currentUser.uid}`);
           const newOrderRef = push(ordersRef);
           
           const purchaseDate = new Date();
@@ -56,7 +56,7 @@ const CartScreen = ({ navigation }) => {
           generatedId = newOrderRef.key;
 
           // Guardar mensaje de éxito en Firebase
-          const messagesRef = ref(rtdb, `messages/${auth.currentUser.uid}`);
+          const messagesRef = ref(db, `messages/${auth.currentUser.uid}`);
           await push(messagesRef, {
             sender: 'Equipo Disainer',
             text: `Gracias por tu compra. Seguimos los detalles por mensaje o WhatsApp para comenzar el proyecto y llegar al resultado deseado.`,

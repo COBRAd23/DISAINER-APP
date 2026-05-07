@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, Image, SafeAreaView, Alert, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import { Camera, User, Mail, Phone, CreditCard, ChevronRight, LogOut, Save, ChevronLeft } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { auth, rtdb } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { ref, onValue, set } from 'firebase/database';
 import { useTheme } from '../context/ThemeContext';
 
@@ -19,7 +19,7 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (auth.currentUser) {
-      const userRef = ref(rtdb, `users/${auth.currentUser.uid}`);
+      const userRef = ref(db, `users/${auth.currentUser.uid}`);
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -50,7 +50,7 @@ const ProfileScreen = ({ navigation }) => {
     setLoading(true);
     try {
       if (auth.currentUser) {
-        await set(ref(rtdb, `users/${auth.currentUser.uid}`), profile);
+        await set(ref(db, `users/${auth.currentUser.uid}`), profile);
         Alert.alert('Éxito', 'Perfil actualizado correctamente');
       }
     } catch (error) {

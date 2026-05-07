@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, SafeAreaView, TouchableOpacity, Image, StatusBar, Platform, ActivityIndicator } from 'react-native';
 import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
 import { ChevronLeft, MessageCircle, Clock } from 'lucide-react-native';
-import { auth, rtdb } from '../config/firebase';
+import { auth, db } from '../config/firebase';
 import { ref, onValue } from 'firebase/database';
 
 const DEFAULT_MESSAGES = [
@@ -15,7 +15,7 @@ const MessagesScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (!auth.currentUser) { setMessages(DEFAULT_MESSAGES); setLoading(false); return; }
-    const messagesRef = ref(rtdb, `messages/${auth.currentUser.uid}`);
+    const messagesRef = ref(db, `messages/${auth.currentUser.uid}`);
     const unsub = onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {

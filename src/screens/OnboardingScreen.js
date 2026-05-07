@@ -1,6 +1,16 @@
 import { Mail } from 'lucide-react-native';
 import { useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { COLORS, TYPOGRAPHY } from '../constants/theme';
 
 const { width, height } = Dimensions.get('window');
@@ -23,8 +33,8 @@ const SLIDES = [
   },
   {
     id: '4',
-    title: '', // Final login screen
-    image: require('../../assets/images/onboarding3.webp'), // Use same or specific background
+    title: '',
+    image: require('../../assets/images/onboarding3.webp'),
   },
 ];
 
@@ -90,7 +100,6 @@ const OnboardingScreen = ({ navigation }) => {
           ))}
         </View>
 
-        {/* Buttons Overlay */}
         {currentSlideIndex < SLIDES.length - 1 ? (
           <View style={styles.buttonRow}>
             <TouchableOpacity onPress={skip}>
@@ -102,41 +111,57 @@ const OnboardingScreen = ({ navigation }) => {
           </View>
         ) : (
           <View style={styles.loginCardContainer}>
-             {/* Branding on Login Slide */}
+            {/* Branding */}
             <View style={styles.brandingHeader}>
-               <Image 
-                 source={require('../../assets/images/disainerlogo.png')} 
-                 style={styles.logo} 
-                 resizeMode="contain" 
-               />
-               <Text style={styles.tagline}>Diseñar es decidir. Lo demás sobra.</Text>
+              <Image
+                source={require('../../assets/images/disainerlogo.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+              <Text style={styles.tagline}>Diseñar es decidir. Lo demás sobra.</Text>
             </View>
 
             {/* Login Card */}
             <View style={styles.loginCard}>
               <Text style={styles.cardTitle}>Bienvenido de Nuevo</Text>
-              
-              <TouchableOpacity 
-                style={styles.socialButton} 
-                onPress={() => navigation.navigate('Login')}
+
+              {/* ✅ Iniciar sesión → Login normal con email */}
+              <TouchableOpacity
+                style={styles.socialButton}
+                onPress={() => navigation.navigate('Login', { focusEmail: true })}
               >
                 <Text style={styles.socialButtonText}>Iniciar sesión</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.googleButton} onPress={() => navigation.navigate('Login')}>
-                <Image 
-                  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png' }}
+              {/* ✅ Google → dispara Google Sign-In automáticamente */}
+              <TouchableOpacity
+                style={styles.googleButton}
+                onPress={() => navigation.navigate('Login', { triggerGoogle: true })}
+              >
+                <Image
+                  source={{
+                    uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png',
+                  }}
                   style={styles.googleIcon}
                 />
                 <Text style={styles.googleButtonText}>Iniciar con Google</Text>
+                <View style={{ width: 24 }} />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.emailButton} onPress={() => navigation.navigate('Login')}>
+              {/* ✅ Email → va al login con foco en email */}
+              <TouchableOpacity
+                style={styles.emailButton}
+                onPress={() => navigation.navigate('Login', { focusEmail: true })}
+              >
                 <Mail color={COLORS.onPrimary} size={18} style={{ marginRight: 8 }} />
                 <Text style={styles.emailButtonText}>Continuar con Email</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.createAccount} onPress={() => navigation.navigate('Signup')}>
+              {/* ✅ Crear cuenta → va al Signup */}
+              <TouchableOpacity
+                style={styles.createAccount}
+                onPress={() => navigation.navigate('Signup')}
+              >
                 <Text style={styles.createAccountText}>Crear una Cuenta</Text>
               </TouchableOpacity>
             </View>
@@ -211,7 +236,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 20,
     alignItems: 'center',
-    marginTop: -height * 0.7, // Position it over the last slide
+    marginTop: -height * 0.7,
   },
   brandingHeader: {
     alignItems: 'center',
@@ -299,7 +324,7 @@ const styles = StyleSheet.create({
     color: COLORS.primaryFixedDim,
     ...TYPOGRAPHY.labelSM,
     textDecorationLine: 'underline',
-  }
+  },
 });
 
 export default OnboardingScreen;

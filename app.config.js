@@ -11,9 +11,7 @@ if (fs.existsSync(envPath)) {
     const match = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
     if (match) {
       let value = match[2];
-      if (value.startsWith('"') && value.endsWith('"')) {
-        value = value.slice(1, -1);
-      }
+      if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
       env[match[1]] = value;
     }
   });
@@ -25,7 +23,17 @@ module.exports = {
     ...appJson.expo,
     extra: {
       ...(appJson.expo.extra || {}),
+      // Firebase
       firebaseApiKey: env.FIREBASE_API_KEY || '',
+      firebaseAuthDomain: env.FIREBASE_AUTH_DOMAIN || '',
+      firebaseProjectId: env.FIREBASE_PROJECT_ID || '',
+      firebaseStorageBucket: env.FIREBASE_STORAGE_BUCKET || '',
+      firebaseMessagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID || '',
+      firebaseAppId: env.FIREBASE_APP_ID || '',
+      // Google OAuth
+      googleWebClientId: env.GOOGLE_WEB_CLIENT_ID || '',
+      googleAndroidClientId: env.GOOGLE_ANDROID_CLIENT_ID || '',
+      googleIosClientId: env.GOOGLE_IOS_CLIENT_ID || '',
     },
   },
 };
