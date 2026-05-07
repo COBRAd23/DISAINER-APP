@@ -123,6 +123,14 @@ const OnboardingScreen = ({ navigation }) => {
                 <Text style={styles.socialButtonText}>Iniciar sesión</Text>
               </TouchableOpacity>
 
+              <TouchableOpacity style={styles.googleButton} onPress={() => navigation.navigate('Login')}>
+                <Image 
+                  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png' }}
+                  style={styles.googleIcon}
+                />
+                <Text style={styles.googleButtonText}>Iniciar con Google</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity style={styles.emailButton} onPress={() => navigation.navigate('Login')}>
                 <Mail color={COLORS.onPrimary} size={18} style={{ marginRight: 8 }} />
                 <Text style={styles.emailButtonText}>Continuar con Email</Text>
@@ -247,6 +255,26 @@ const styles = StyleSheet.create({
     color: '#fff',
     ...TYPOGRAPHY.labelMD,
     fontSize: 14,
+  },
+  googleButton: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    paddingVertical: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  googleIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+  },
+  googleButtonText: {
+    color: '#000',
+    ...TYPOGRAPHY.labelMD,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   emailButton: {
     backgroundColor: COLORS.primaryContainer,
