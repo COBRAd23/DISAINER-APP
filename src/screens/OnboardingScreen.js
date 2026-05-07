@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   googleButton: {
+    width: '100%',
     flexDirection: 'row',
     backgroundColor: '#fff',
     paddingVertical: 16,

@@ -27,6 +27,11 @@ const LoginScreen = ({ navigation }) => {
   });
 
   const handleGoogleLogin = async () => {
+    if (!request) {
+      Alert.alert('Error', 'Google Sign-In aún se está inicializando. Intenta de nuevo.');
+      return;
+    }
+    
     setLoading(true);
     try {
       const result = await promptAsync({ useProxy: true, extraParams: { prompt: 'select_account' } });
@@ -50,9 +55,11 @@ const LoginScreen = ({ navigation }) => {
       } else if (result.type === 'cancel' || result.type === 'dismiss') {
         Alert.alert('Cancelado', 'El inicio de sesión fue cancelado');
       } else {
-        Alert.alert('Error', 'No se pudo completar el inicio de sesión con Google');
+        console.error('Google auth result:', result);
+        Alert.alert('Error', 'No se pudo completar el inicio de sesión con Google. Intenta de nuevo.');
       }
     } catch (error) {
+      console.error('Google Login Error:', error);
       Alert.alert('Error de Google Login', error.message || 'Ocurrió un error con Google Sign-In');
     } finally {
       setLoading(false);

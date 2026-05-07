@@ -1,13 +1,16 @@
 import * as AuthSession from 'expo-auth-session';
 import * as Google from 'expo-auth-session/providers/google';
 import * as ImagePicker from 'expo-image-picker';
+import * as WebBrowser from 'expo-web-browser';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
 import { Camera, ChevronLeft, Lock, Mail, MapPin, Phone, User } from 'lucide-react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth, rtdb } from '../config/firebase';
 import { COLORS, SPACING, TYPOGRAPHY } from '../constants/theme';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SignupScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -77,6 +80,11 @@ const SignupScreen = ({ navigation }) => {
   };
 
   const handleGoogleSignup = async () => {
+    if (!request) {
+      Alert.alert('Error', 'Google Sign-In aún se está inicializando. Intenta de nuevo.');
+      return;
+    }
+
     setLoading(true);
     try {
       const result = await promptAsync({ useProxy: true, extraParams: { prompt: 'select_account' } });
@@ -99,12 +107,15 @@ const SignupScreen = ({ navigation }) => {
         };
 
         await set(ref(rtdb, `users/${user.uid}`), googleProfile);
+        Alert.alert('Éxito', `¡Bienvenido ${googleProfile.firstName}!`);
       } else if (result.type === 'cancel' || result.type === 'dismiss') {
         Alert.alert('Cancelado', 'El registro con Google fue cancelado');
       } else {
-        Alert.alert('Error', 'No se pudo completar el registro con Google');
+        console.error('Google auth result:', result);
+        Alert.alert('Error', 'No se pudo completar el registro con Google. Intenta de nuevo.');
       }
     } catch (error) {
+      console.error('Google Signup Error:', error);
       Alert.alert('Error', error.message || 'No se pudo registrar con Google');
     } finally {
       setLoading(false);
@@ -139,13 +150,15 @@ const SignupScreen = ({ navigation }) => {
         <ChevronLeft color="#fff" size={28} />
       </TouchableOpacity>
       <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 80}
       >
         <ScrollView 
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
         >
           <Text style={styles.title}>Crear Cuenta</Text>
           <Text style={styles.subtitle}>Unite a la experiencia Disainer</Text>
