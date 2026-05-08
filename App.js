@@ -22,16 +22,18 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import ChatDetailScreen from './src/screens/ChatDetailScreen';
+import PrivacySettingsScreen from './src/screens/PrivacySettingsScreen';
+import BillingHistoryScreen from './src/screens/BillingHistoryScreen';
+import HelpCenterScreen from './src/screens/HelpCenterScreen';
+import TermsScreen from './src/screens/TermsScreen';
 import { CartProvider } from './src/context/CartContext';
 import { ThemeProvider } from './src/context/ThemeContext';
 import { NotificationProvider } from './src/context/NotificationContext';
 
-// Prevenimos el auto-hide del splash
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 
-// Global mock for demo purposes
 export let setDemoUserGlobal;
 
 function App() {
@@ -42,7 +44,6 @@ function App() {
 
   setDemoUserGlobal = setDemoUser;
 
-  // Carga de fuentes originales
   let [fontsLoaded] = useFonts({
     SpaceGrotesk_400Regular,
     SpaceGrotesk_500Medium,
@@ -53,30 +54,27 @@ function App() {
     Montserrat_700Bold,
   });
 
-  // Listener de Firebase
   useEffect(() => {
     let subscriber;
     try {
       subscriber = onAuthStateChanged(
-        auth, 
+        auth,
         (firebaseUser) => {
           setUser(firebaseUser);
           setInitializing(false);
         },
         (error) => {
-          // Firebase Auth error (ej: API key inválida) — no bloquea la app
           console.warn('Firebase Auth error:', error.code);
           setInitializing(false);
         }
       );
-    } catch(e) {
+    } catch (e) {
       console.warn('Firebase init warning:', e.message);
       setInitializing(false);
     }
     return subscriber;
   }, []);
 
-  // Ocultamos el splash cuando las fuentes estén listas
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync().catch(() => {});
@@ -107,6 +105,10 @@ function App() {
                   <Stack.Screen name="Messages" component={MessagesScreen} />
                   <Stack.Screen name="Settings" component={SettingsScreen} />
                   <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
+                  <Stack.Screen name="PrivacySettings" component={PrivacySettingsScreen} />
+                  <Stack.Screen name="BillingHistory" component={BillingHistoryScreen} />
+                  <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+                  <Stack.Screen name="TermsScreen" component={TermsScreen} />
                 </>
               ) : (
                 <>
