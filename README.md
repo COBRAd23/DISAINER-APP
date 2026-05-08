@@ -234,9 +234,11 @@ FIREBASE_APP_ID=tu_app_id
 
 ## 👨‍💻 Autor
 
-**Agustín González** — Cobra Design Estudio  
+**Agustín González Lartigue** — DISAINER 
 Proyecto Final — Desarrollo de Aplicaciones Móviles  
 Mayo 2026
+
+https://iamdisainer.com
 
 ---
 
