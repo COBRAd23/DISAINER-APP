@@ -232,7 +232,9 @@ const HomeScreen = ({ navigation }) => {
 
             <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
               {notifications.length === 0 ? (
-                <Text style={{ color: COLORS.onSurfaceVariant, ...TYPOGRAPHY.bodyMD }}>No tenés notificaciones nuevas.</Text>
+                <Text style={{ color: COLORS.onSurfaceVariant, ...TYPOGRAPHY.bodyMD, textAlign: 'center', marginTop: 20 }}>
+                  ¡A la espera del próximo aviso! 🔔
+                </Text>
               ) : (
                 notifications.map((notif) => (
                   <View key={notif.id} style={styles.notificationItem}>

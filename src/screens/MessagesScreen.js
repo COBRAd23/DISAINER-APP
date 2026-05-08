@@ -3,33 +3,51 @@ import { StyleSheet, View, Text, ScrollView, SafeAreaView, TouchableOpacity, Ima
 import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
 import { ChevronLeft, MessageCircle, Clock } from 'lucide-react-native';
 import { auth, db } from '../config/firebase';
-import { ref, onValue } from 'firebase/database';
-
-const DEFAULT_MESSAGES = [
-  { id: 'welcome_1', sender: 'Equipo Disainer', text: '¡Bienvenido a Disainer! Estamos listos para empezar.', time: 'Hoy', unread: true },
-];
+import { ref, onValue, update, remove } from 'firebase/database';
 
 const MessagesScreen = ({ navigation }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!auth.currentUser) { setMessages(DEFAULT_MESSAGES); setLoading(false); return; }
+    if (!auth.currentUser) { setLoading(false); return; }
+
     const messagesRef = ref(db, `messages/${auth.currentUser.uid}`);
     const unsub = onValue(messagesRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
+        const now = new Date();
+        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+        // Borrar mensajes con más de una semana
+        Object.keys(data).forEach(async (key) => {
+          const msgDate = new Date(data[key].date);
+          if (msgDate < oneWeekAgo) {
+            await remove(ref(db, `messages/${auth.currentUser.uid}/${key}`));
+          }
+        });
+
         const msgsList = Object.keys(data)
           .map(key => ({ id: key, ...data[key] }))
+          .filter(msg => new Date(msg.date) >= oneWeekAgo) // filtrar viejos localmente también
           .sort((a, b) => new Date(b.date) - new Date(a.date));
+
         setMessages(msgsList);
       } else {
-        setMessages(DEFAULT_MESSAGES);
+        setMessages([]);
       }
       setLoading(false);
     });
     return unsub;
   }, []);
+
+  const handleOpenMessage = async (msg) => {
+    // Marcar como leído al abrir
+    if (msg.unread && auth.currentUser) {
+      await update(ref(db, `messages/${auth.currentUser.uid}/${msg.id}`), { unread: false });
+    }
+    navigation.navigate('ChatDetail', { chat: msg });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,13 +66,19 @@ const MessagesScreen = ({ navigation }) => {
         <View style={styles.center}>
           <ActivityIndicator size="large" color={COLORS.primaryContainer} />
         </View>
+      ) : messages.length === 0 ? (
+        <View style={styles.center}>
+          <MessageCircle color={COLORS.primaryContainer} size={48} style={{ marginBottom: 16 }} />
+          <Text style={styles.emptyTitle}>Sin mensajes por ahora</Text>
+          <Text style={styles.emptySubtitle}>Cuando haya novedades de tu proyecto o realices una compra, te avisamos acá.</Text>
+        </View>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollContent}>
           {messages.map(msg => (
             <TouchableOpacity 
               key={msg.id} 
               style={[styles.msgCard, msg.unread && styles.unreadCard]}
-              onPress={() => navigation.navigate('ChatDetail', { chat: msg })}
+              onPress={() => handleOpenMessage(msg)}
             >
               <View style={styles.avatar}>
                 <MessageCircle color={COLORS.primaryContainer} size={24} />
@@ -64,7 +88,7 @@ const MessagesScreen = ({ navigation }) => {
                   <Text style={styles.senderName}>{msg.sender}</Text>
                   <View style={styles.timeRow}>
                     <Clock color={COLORS.onSurfaceVariant} size={12} />
-                    <Text style={styles.timeText}>{msg.time}</Text>
+                    <Text style={styles.timeText}>{msg.time || new Date(msg.date).toLocaleDateString()}</Text>
                   </View>
                 </View>
                 <Text style={styles.msgText} numberOfLines={1}>{msg.text}</Text>
@@ -80,7 +104,9 @@ const MessagesScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 40 },
+  emptyTitle: { ...TYPOGRAPHY.headlineMD, color: COLORS.onSurface, textAlign: 'center', marginBottom: 12 },
+  emptySubtitle: { ...TYPOGRAPHY.bodyMD, color: COLORS.onSurfaceVariant, textAlign: 'center', lineHeight: 22 },
   header: { 
     flexDirection: 'row', 
     alignItems: 'center', 

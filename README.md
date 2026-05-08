@@ -47,3 +47,7 @@ APP DISAINER
 📄 package.json      # Dependencias (SQLite, Firebase, Camera)
 📄 README.md         # Documentación del proyecto
 📄 tsconfig.json
+
+
+INICIAR SECION CON EMAIL - TE CREAS UN USUARIO UN MAIL UNA CLAVE FACIL Y ACCEDES A LA APP
+DEBO CORREGIR COSITAS PARA QUE FUNCIONE BIEN GOOGLE

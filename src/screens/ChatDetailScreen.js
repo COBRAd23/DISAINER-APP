@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, SafeAreaView, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
 import { COLORS, TYPOGRAPHY, SPACING } from '../constants/theme';
-import { ChevronLeft, Send, MessageCircle } from 'lucide-react-native';
+import { ChevronLeft, Send } from 'lucide-react-native';
 
 const ChatDetailScreen = ({ route, navigation }) => {
-  const { chat } = route.params || { chat: { sender: 'Equipo Disainer', id: '1' } };
+  const { chat } = route.params || { chat: { sender: 'Equipo Disainer', text: '' } };
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([
-    { id: '1', text: '¡Hola! Bienvenido al canal de soporte oficial de Disainer.', sender: 'system', time: '10:00 AM' },
-    { id: '2', text: 'Hemos recibido tu pedido y ya estamos trabajando en los primeros bocetos.', sender: chat.sender, time: '10:30 AM' },
+  const [localMessages, setLocalMessages] = useState([
+    {
+      id: '1',
+      text: chat.text || '¡Hola! Bienvenido al canal de soporte oficial de Disainer.',
+      sender: 'system',
+      time: chat.time || new Date(chat.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    },
   ]);
 
   const handleSend = () => {
@@ -19,7 +23,7 @@ const ChatDetailScreen = ({ route, navigation }) => {
         sender: 'me',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
-      setMessages([...messages, newMessage]);
+      setLocalMessages([...localMessages, newMessage]);
       setMessage('');
     }
   };
@@ -35,13 +39,13 @@ const ChatDetailScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <Text style={styles.headerTitle}>{chat.sender}</Text>
-          <Text style={styles.headerStatus}>En línea</Text>
+          <Text style={styles.headerStatus}>Equipo Disainer</Text>
         </View>
         <View style={{ width: 24 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.chatContent}>
-        {messages.map((msg) => (
+        {localMessages.map((msg) => (
           <View 
             key={msg.id} 
             style={[
@@ -55,7 +59,12 @@ const ChatDetailScreen = ({ route, navigation }) => {
             ]}>
               {msg.text}
             </Text>
-            <Text style={styles.messageTime}>{msg.time}</Text>
+            <Text style={[
+              styles.messageTime,
+              msg.sender === 'me' && { color: 'rgba(0,0,0,0.4)' }
+            ]}>
+              {msg.time}
+            </Text>
           </View>
         ))}
       </ScrollView>
@@ -72,6 +81,7 @@ const ChatDetailScreen = ({ route, navigation }) => {
             value={message}
             onChangeText={setMessage}
             multiline
+            autoCorrect={false}
           />
           <TouchableOpacity 
             style={[styles.sendBtn, !message.trim() && { opacity: 0.5 }]} 
@@ -106,7 +116,6 @@ const styles = StyleSheet.create({
     padding: 15, 
     borderRadius: 20, 
     marginBottom: 15,
-    position: 'relative'
   },
   myMessage: { 
     alignSelf: 'flex-end', 
